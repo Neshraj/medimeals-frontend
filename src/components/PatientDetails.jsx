@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/PatientDetails.css";
 
 function PatientDetails() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [allPatientDetails, setAllPatientDetails] = useState([]);
   const [filteredData, setFilteredData] = useState([allPatientDetails]);
   const [searchQuery, setSearchQuery] = useState("");

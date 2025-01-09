@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/TrackTasks.css";
 
 const TrackTasks = () => {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [allTasks, setAllTasks] = useState([]);
 
   useEffect(() => {

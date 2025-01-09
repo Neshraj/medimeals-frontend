@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/InnerPantry.css";
 
 function InnerPantry() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [staffList, setStaffList] = useState([]);
   const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
   const [showForm, setShowForm] = useState(false);

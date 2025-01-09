@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "../styles/PatientInfo.css";
 
 function PatientInfo() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const location = useLocation();
   const { patient } = location.state || {};
 

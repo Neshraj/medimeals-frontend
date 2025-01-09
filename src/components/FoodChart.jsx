@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "../styles/FoodChart.css";
 
 function FoodChart() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [selectedDay, setSelectedDay] = useState("Monday");
   const [mealType, setMealType] = useState("veg");
   const [mealPlans, setMealPlans] = useState({});

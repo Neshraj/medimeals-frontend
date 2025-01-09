@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 
 function Login() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   useDocumentTitle('Login');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
