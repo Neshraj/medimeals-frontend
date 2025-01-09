@@ -1,0 +1,85 @@
+.pantry-details-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .staff-info {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  
+  .meal-selection-container {
+    margin-bottom: 20px;
+  }
+  
+  .meal-select {
+    margin-bottom: 10px;
+  }
+  
+  .meal-select label {
+    font-weight: bold;
+  }
+  
+  .meal-select select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .assign-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .assign-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .assigned-tasks {
+    margin-top: 20px;
+  }
+  
+  .assigned-tasks h3 {
+    margin-bottom: 10px;
+  }
+  
+  .assigned-tasks ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .assigned-tasks li {
+    padding: 8px;
+    background: #e9ecef;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 768px) {
+    .pantry-details-container {
+      padding: 15px;
+    }
+  
+    .assign-btn {
+      font-size: 12px;
+    }
+  
+    .meal-select select {
+      font-size: 12px;
+    }
+  }
+  

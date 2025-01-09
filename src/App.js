@@ -11,6 +11,7 @@ import PatientDetails from "./components/PatientDetails";
 import FoodChart from "./components/FoodChart";
 import InnerPantry from "./components/InnerPantry";
 import PatientInfo from "./components/PatientInfo";
+import PantryDetails from "./components/PantryDetails";
 
 function App() {
   const router = createBrowserRouter(
@@ -26,6 +27,7 @@ function App() {
           <Route path="patient-info" element={<PatientInfo />} />
           <Route path="food-chart" element={<FoodChart />} />
           <Route path="inner-pantry" element={<InnerPantry />} />
+          <Route path="pantry-details" element={<PantryDetails />} />
         </Route>
 
         <Route path="pantry" element={<Pantry />} />
