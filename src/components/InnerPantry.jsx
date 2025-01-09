@@ -7,7 +7,7 @@ import "../styles/InnerPantry.css";
 
 function InnerPantry() {
   const [staffList, setStaffList] = useState(pantryStaffDetails);
-  const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "" });
+  const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
@@ -17,13 +17,13 @@ function InnerPantry() {
   };
 
   const handleAddStaff = () => {
-    const { name, contact, location } = newStaff;
-    if (!name || !contact || !location) {
+    const { name, contact, location, email, password } = newStaff;
+    if (!name || !contact || !location || !email || !password) {
       toast.info("Fill all fields!");
       return;
     }
     setStaffList((prev) => [...prev, newStaff]);
-    setNewStaff({ name: "", contact: "", location: "" });
+    setNewStaff({ name: "", contact: "", location: "", email: "", password: "" });
     setShowForm(false);
     toast.success("Staff added successfully!");
   };
@@ -63,6 +63,20 @@ function InnerPantry() {
             value={newStaff.location}
             onChange={handleInputChange}
           />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={newStaff.email}
+            onChange={handleInputChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={newStaff.password}
+            onChange={handleInputChange}
+          />
           <button className="submit-btn" onClick={handleAddStaff}>
             Add Staff
           </button>
@@ -80,6 +94,7 @@ function InnerPantry() {
             <p><strong>Name:</strong> {staff.name}</p>
             <p><strong>Contact:</strong> {staff.contact}</p>
             <p><strong>Location:</strong> {staff.location}</p>
+            <p><strong>Email:</strong> {staff.email}</p>
           </div>
         ))}
       </div>

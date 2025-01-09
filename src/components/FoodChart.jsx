@@ -1,12 +1,34 @@
-import React, { useState } from "react";
-import preData from "../data/mealdata";
-
+import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import "../styles/FoodChart.css";
 
 function FoodChart() {
   const [selectedDay, setSelectedDay] = useState("Monday");
   const [mealType, setMealType] = useState("veg");
-  const [mealPlans, setMealPlans] = useState(preData);
+  const [mealPlans, setMealPlans] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMealPlans = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/mealdata");
+        const data = await response.json();
+
+        // Transform data into the desired format (if necessary)
+        const formattedData = data.reduce((acc, item) => {
+          acc[item.day] = item.meals;
+          return acc;
+        }, {});
+
+        setMealPlans(formattedData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching meal plans:", error);
+      }
+    };
+
+    fetchMealPlans();
+  }, []);
 
   const handleInputChange = (e, mealTime) => {
     const { name, value } = e.target;
@@ -25,13 +47,51 @@ function FoodChart() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Food Chart Submitted:", mealPlans[selectedDay][mealType]);
+  
+    const updatedMealPlan = mealPlans[selectedDay];
+  
+    try {
+      const response = await fetch("http://localhost:5000/updatemealplane", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          day: selectedDay,
+          meals: updatedMealPlan,
+        }),
+      });
+      const data = await response.json();
+  
+      if (response.ok) {
+        if(data.message === "Meal plan updated successfully"){
+          toast.success(data.message);
+        }
+        else{
+          toast.error(data.message);
+        }
+      } else {
+        toast.error("Failed to update meal plan");
+      }
+    } catch (error) {
+      console.error("Error updating meal plan:", error);
+    }
   };
+  
+
+  if (loading) {
+    return <div>Loading meal plans...</div>;
+  }
 
   return (
     <div className="food-chart-container">
+      <ToastContainer 
+              position="top-center" 
+              autoClose={2000} 
+              draggable
+      />
       <h1>Food Chart</h1>
 
       <div className="days-container">
@@ -70,7 +130,7 @@ function FoodChart() {
               <input
                 type="text"
                 name="meal"
-                value={mealPlans[selectedDay][mealType][mealTime].meal}
+                value={mealPlans[selectedDay][mealType][mealTime]?.meal || ""}
                 onChange={(e) => handleInputChange(e, mealTime)}
               />
             </label>
@@ -79,7 +139,7 @@ function FoodChart() {
               <input
                 type="text"
                 name="instructions"
-                value={mealPlans[selectedDay][mealType][mealTime].instructions}
+                value={mealPlans[selectedDay][mealType][mealTime]?.instructions || ""}
                 onChange={(e) => handleInputChange(e, mealTime)}
               />
             </label>

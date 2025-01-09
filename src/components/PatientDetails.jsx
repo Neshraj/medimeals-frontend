@@ -1,13 +1,28 @@
-import React, { useState } from "react";
-import allPatientDetails from "../data/parientdetails";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/PatientDetails.css";
 
 function PatientDetails() {
-  const navigate = useNavigate();
-  const [filteredData, setFilteredData] = useState(allPatientDetails);
+  const [allPatientDetails, setAllPatientDetails] = useState([]);
+  const [filteredData, setFilteredData] = useState([allPatientDetails]);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getpatientsdetails");
+        const data = await response.json();
+        setAllPatientDetails(data);
+        setFilteredData(data);
+      } catch (error) {
+        console.error("Error fetching patient details:", error);
+      }
+    };
+
+    fetchPatientDetails();
+  }, []);
 
   const handleFilterChange = (e) => {
     const value = e.target.value;

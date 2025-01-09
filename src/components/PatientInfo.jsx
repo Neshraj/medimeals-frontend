@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import "../styles/PatientInfo.css";
 
 function PatientInfo() {
@@ -17,11 +18,40 @@ function PatientInfo() {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    // Here, you can add logic to save the updated data, e.g., by sending it to an API or updating the state
-    setIsEditing(false);
-    console.log("Updated Patient Data:", updatedPatient);
+  const handleSave = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/updatepatientdetail', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPatient),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        if(result.message==='Patient details updated successfully'){
+          toast.success('Patient details updated successfully');
+        }
+        else if(result.message==='No changes made'){
+          toast.info('No changes made');
+        }
+        else if(result.message==='Error updating patient details'){
+          toast.error('Error updating patient details');
+        }
+
+        else{
+          toast.error('Failed to update patient details');
+        }
+        setIsEditing(false);
+      } else {
+        toast.error('Failed to update patient details');
+      }
+    } catch (error) {
+      toast.error('Error updating patient details:');
+    }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +63,11 @@ function PatientInfo() {
 
   return (
     <div className="patient-info-container">
+      <ToastContainer 
+              position="top-center" 
+              autoClose={2000} 
+              draggable
+      />
       <h2 className="patient-info-title">Patient Information</h2>
 
       <div className="patient-info-buttons">
