@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 
 function Login() {
-
+  const baseURL = "http://localhost:5000";
   useDocumentTitle('Login');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +33,7 @@ function Login() {
       console.log(password);
       
       
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch(`${baseURL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

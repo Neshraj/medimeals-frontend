@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/PatientDetails.css";
 
 function PatientDetails() {
+  const baseURL = "http://localhost:5000";
   const [allPatientDetails, setAllPatientDetails] = useState([]);
   const [filteredData, setFilteredData] = useState([allPatientDetails]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,7 +13,7 @@ function PatientDetails() {
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
-        const response = await fetch("http://localhost:5000/getpatientsdetails");
+        const response = await fetch(`${baseURL}/getpatientsdetails`);
         const data = await response.json();
         setAllPatientDetails(data);
         setFilteredData(data);

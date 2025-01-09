@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "../styles/FoodChart.css";
 
 function FoodChart() {
+  const baseURL = "http://localhost:5000";
   const [selectedDay, setSelectedDay] = useState("Monday");
   const [mealType, setMealType] = useState("veg");
   const [mealPlans, setMealPlans] = useState({});
@@ -11,7 +12,7 @@ function FoodChart() {
   useEffect(() => {
     const fetchMealPlans = async () => {
       try {
-        const response = await fetch("http://localhost:5000/mealdata");
+        const response = await fetch(`${baseURL}/mealdata`);
         const data = await response.json();
 
         // Transform data into the desired format (if necessary)
@@ -53,7 +54,7 @@ function FoodChart() {
     const updatedMealPlan = mealPlans[selectedDay];
   
     try {
-      const response = await fetch("http://localhost:5000/updatemealplane", {
+      const response = await fetch(`${baseURL}/updatemealplane`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

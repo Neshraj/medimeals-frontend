@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const PantryDetails = () => {
+  const baseURL = "http://localhost:5000";
   const navigate = useNavigate();
   const { state } = useLocation();
   const { staff } = state || {};
@@ -25,7 +26,7 @@ const PantryDetails = () => {
 
   const fetchTasksForStaff = async (email) => {
     try {
-      const response = await fetch("http://localhost:5000/getTasks", {
+      const response = await fetch(`${baseURL}/getTasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +66,7 @@ const PantryDetails = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/assignTask", {
+      const response = await fetch(`${baseURL}/assignTask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ const PantryDetails = () => {
 
   const removeStaff = async () => {
     try {
-      const response = await fetch("http://localhost:5000/removepantrystaff", {
+      const response = await fetch(`${baseURL}/removepantrystaff`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

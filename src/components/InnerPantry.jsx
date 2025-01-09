@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/InnerPantry.css";
 
 function InnerPantry() {
+  const baseURL = "http://localhost:5000";
   const [staffList, setStaffList] = useState([]);
   const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
   const [showForm, setShowForm] = useState(false);
@@ -13,7 +14,7 @@ function InnerPantry() {
   useEffect(() => {
     const fetchPantryStaff = async () => {
       try {
-        const response = await fetch("http://localhost:5000/getpantrystaffdata");
+        const response = await fetch(`${baseURL}/getpantrystaffdata`);
         const data = await response.json();
         setStaffList(data); // Set pantry staff data to state
       } catch (error) {
@@ -38,7 +39,7 @@ function InnerPantry() {
 
     try {
       // Send the new staff data to the backend
-      const response = await fetch("http://localhost:5000/pantry-staff", {
+      const response = await fetch(`${baseURL}/pantry-staff`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

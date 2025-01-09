@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "../styles/PatientInfo.css";
 
 function PatientInfo() {
+  const baseURL = "http://localhost:5000";
   const location = useLocation();
   const { patient } = location.state || {};
 
@@ -20,7 +21,7 @@ function PatientInfo() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch('http://localhost:5000/updatepatientdetail', {
+      const response = await fetch(`${baseURL}/updatepatientdetail`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

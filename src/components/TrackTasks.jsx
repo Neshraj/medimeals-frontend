@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/TrackTasks.css";
 
 const TrackTasks = () => {
+  const baseURL = "http://localhost:5000";
   const [allTasks, setAllTasks] = useState([]);
 
   useEffect(() => {
@@ -12,7 +13,7 @@ const TrackTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch("http://localhost:5000/getAllTasks", {
+      const response = await fetch(`${baseURL}/getAllTasks`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
