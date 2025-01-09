@@ -1,0 +1,112 @@
+.food-chart-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .days-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  
+  .day-btn {
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #ddd;
+    border-radius: 4px;
+  }
+  
+  .day-btn.selected {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .meal-type-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .meal-type-btn {
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #ddd;
+    border-radius: 4px;
+  }
+  
+  .meal-type-btn.selected {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .meal-plan {
+    margin-bottom: 20px;
+  }
+  
+  .meal-plan h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  form{
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+
+  @media(max-width: 950px){
+    .days-container button{
+      margin: 5px;
+      padding: 5px;
+      font-size: small;
+    }
+
+    .meal-type-btn.selected {
+      font-size: small;
+
+    }
+
+  }
+  
