@@ -1,0 +1,67 @@
+.track-tasks-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .assigned-tasks ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .task-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .task-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .status-label {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .task-card {
+      padding: 10px;
+    }
+  
+    .task-title {
+      font-size: 1rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-card {
+      padding: 8px;
+    }
+  
+    .task-title {
+      font-size: 0.9rem;
+    }
+  
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+  

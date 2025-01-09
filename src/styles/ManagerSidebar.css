@@ -20,7 +20,7 @@ body{
 
 .manager-sidebar{
     border: var(--border);
-    width: 170px;
+    width: 200px;
     height: 98vh;
     display: flex;
     flex-direction: column;
@@ -31,7 +31,7 @@ body{
 
 .sidebar-items{
     background-color: #ececec;
-    width: 130px;
+    width: 150px;
     text-align: center;
     padding: 10px;
     border-radius: 10px;
@@ -53,6 +53,7 @@ body{
         width: 100px;
         text-align: center;
         padding: 5px;
+        margin: 0px;
         border-radius: 5px;
         cursor: pointer;
         text-decoration: none;

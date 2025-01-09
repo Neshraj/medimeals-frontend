@@ -1,31 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import pantryStaffDetails from "../data/pantryStafdetails";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/InnerPantry.css";
 
 function InnerPantry() {
-  const [staffList, setStaffList] = useState(pantryStaffDetails);
+  const [staffList, setStaffList] = useState([]);
   const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPantryStaff = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getpantrystaffdata");
+        const data = await response.json();
+        setStaffList(data); // Set pantry staff data to state
+      } catch (error) {
+        console.error("Error fetching pantry staff:", error);
+      }
+    };
+
+    fetchPantryStaff();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewStaff((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddStaff = () => {
+  const handleAddStaff = async () => {
     const { name, contact, location, email, password } = newStaff;
     if (!name || !contact || !location || !email || !password) {
       toast.info("Fill all fields!");
       return;
     }
-    setStaffList((prev) => [...prev, newStaff]);
-    setNewStaff({ name: "", contact: "", location: "", email: "", password: "" });
-    setShowForm(false);
-    toast.success("Staff added successfully!");
+
+    try {
+      // Send the new staff data to the backend
+      const response = await fetch("http://localhost:5000/pantry-staff", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newStaff),
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+        if(res.message === "Staff added successfully") {
+        setStaffList((prev) => [...prev, newStaff]);
+        setNewStaff({ name: "", contact: "", location: "", email: "", password: "" });
+        setShowForm(false);
+        toast.success(res.message);
+        } else {
+          toast.error("Failed to add staff");
+        }
+      } else {
+        toast.error("Failed to add staff");
+      }
+    } catch (error) {
+      console.error("Error adding staff:", error);
+      toast.error("Error adding staff.");
+    }
   };
 
   const handleStaffClick = (staff) => {

@@ -12,6 +12,7 @@ import FoodChart from "./components/FoodChart";
 import InnerPantry from "./components/InnerPantry";
 import PatientInfo from "./components/PatientInfo";
 import PantryDetails from "./components/PantryDetails";
+import TrackTasks from "./components/TrackTasks";
 
 function App() {
   const router = createBrowserRouter(
@@ -28,11 +29,11 @@ function App() {
           <Route path="food-chart" element={<FoodChart />} />
           <Route path="inner-pantry" element={<InnerPantry />} />
           <Route path="pantry-details" element={<PantryDetails />} />
+          <Route path="track-tasks" element={<TrackTasks />} />
         </Route>
 
         <Route path="pantry" element={<Pantry />} />
         <Route path="delivery" element={<Delivery />} />
-
         <Route path="*" element={<PageNotFound />} />
       </Route>
     )

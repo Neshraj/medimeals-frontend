@@ -57,6 +57,10 @@
   .staff-list {
     margin-top: 20px;
   }
+
+  .staff-list h2{
+    text-align: center;
+  }
   
   .staff-card {
     border: 1px solid #ddd;
