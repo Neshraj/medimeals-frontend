@@ -124,7 +124,7 @@ const Delivery = () => {
             ))}
           </ul>
         ) : (
-          <p>No tasks available.</p>
+          <p className="taststatus">No tasks available.</p>
         )}
       </div>
     </div>
