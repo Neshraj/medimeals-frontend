@@ -1,5 +1,4 @@
 import React  from "react";
-import useDocumentTitle from "../useDocumentTitle";
 
 function Home() {
   return (

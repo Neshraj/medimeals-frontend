@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useDocumentTitle from "../useDocumentTitle";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +6,6 @@ import "../styles/Login.css";
 
 function Login() {
   const baseURL = "https://medimealsbackend.onrender.com";
-  useDocumentTitle("Login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();

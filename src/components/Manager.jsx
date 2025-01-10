@@ -1,13 +1,11 @@
 import React from "react";
 import { NavLink, Routes, Route } from "react-router-dom";
-import useDocumentTitle from "../useDocumentTitle";
 import PatientDetails from "./PatientDetails";
 import FoodChart from "./FoodChart";
 import InnerPantry from "./InnerPantry";
 import "../styles/Manager.css";
 
 function Manager() {
-  useDocumentTitle("Manager");
 
   return (
     <div className="manager-container">
