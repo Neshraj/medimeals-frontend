@@ -1,28 +1,30 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import ManagerSidebar from "../components/ManagerSidebar";
+import PantrySidebar from "../components/PantrySidebar";
 
 import "../styles/ManagerLayout.css";
 
-const ManagerLayout = () => {
+const PantryLayout = () => {
   const { state } = useLocation();
-  const { email, password } = state || {};
   const navigate = useNavigate();
+  const { email, password } = state || {};
 
   useEffect(() => {
     if (!email || !password) {
-      //navigate("/login");
+      // Optionally navigate to login if email or password is not available
+      // navigate("/login");
     }
   }, [email, password, navigate]);
 
   return (
     <div className="manager-layout-container">
-      <ManagerSidebar />
+      {/* Pass email and password as props to PantrySidebar */}
+      <PantrySidebar email={email} password={password} />
       <div className="manager-layout-content">
-        <Outlet />
+        <Outlet context={{ email, password }} />
       </div>
     </div>
   );
 };
 
-export default ManagerLayout;
+export default PantryLayout;

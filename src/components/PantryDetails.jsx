@@ -4,9 +4,10 @@ import "../styles/PantryDetails.css";
 import preData from "../data/mealdata";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { io } from "socket.io-client";
 
 const PantryDetails = () => {
-  const baseURL = "https://medimealsbackend.onrender.com";
+  const baseURL = "http://localhost:5000";
   const navigate = useNavigate();
   const { state } = useLocation();
   const { staff } = state || {};
@@ -17,11 +18,23 @@ const PantryDetails = () => {
   const [assignedTasks, setAssignedTasks] = useState([]);
   const [mealInstruction, setMealInstruction] = useState("");
   const [allTasks, setAllTasks] = useState([]);
+  const socket = io(baseURL);
+
 
   useEffect(() => {
     if (staff?.email) {
       fetchTasksForStaff(staff.email);
     }
+
+    // Listen for real-time task updates
+    socket.on("taskUpdated", () => {
+      fetchTasksForStaff(staff.email); // Re-fetch tasks when an update is received
+    });
+
+    return () => {
+      socket.disconnect(); // Cleanup on component unmount
+    };
+
   }, [staff]);
 
   const fetchTasksForStaff = async (email) => {
@@ -63,6 +76,8 @@ const PantryDetails = () => {
       title: taskDetails,
       taskId,
       status: "Pending",
+      deliveryId: "",
+      deliverTo: "",
     };
 
     try {

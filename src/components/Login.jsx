@@ -31,8 +31,7 @@ function Login() {
     try {
       console.log(email);
       console.log(password);
-      
-      
+
       const response = await fetch(`${baseURL}/login`, {
         method: "POST",
         headers: {
@@ -43,28 +42,25 @@ function Login() {
 
       const data = await response.json();
       if (response) {
-        if(data.message==='Login success for manager'){
+        if(data.message === 'Login success for manager') {
           toast.success(data.message);
-          navigate('manager');
-        }
-        else if(data.message==='Login success for pantry'){
+          //localStorage.setItem('email', email); // Store email in local storage
+          navigate('/manager', { state: { email, password } });
+        } else if(data.message === 'Login success for pantry') {
           toast.success(data.message);
-          navigate('pantry');
-        }
-        else if(data.message==='Login success for delivery'){
+          localStorage.setItem('email', email); // Store email in local storage
+          navigate('/pantry', { state: { email, password } });
+        } else if(data.message === 'Login success for delivery') {
           toast.success(data.message);
-          navigate('delivery');
-        }
-        else if(data.message==='User not found'){
+          localStorage.setItem('email', email); // Store email in local storage
+          navigate('/delivery', { state: { email, password } });
+        } else if(data.message === 'User not found') {
           toast.info(data.message || "Login failed");
-        }
-        else if(data.message==='There is a problem in logging in. Try again later'){
+        } else if(data.message === 'There is a problem in logging in. Try again later') {
+          toast.error(data.message || "Login failed");
+        } else {
           toast.error(data.message || "Login failed");
         }
-        else{
-          toast.error(data.message || "Login failed");
-        }
-        
       } else {
         toast.error(data.message || "Login failed");
       }

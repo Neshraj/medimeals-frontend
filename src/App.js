@@ -13,6 +13,13 @@ import InnerPantry from "./components/InnerPantry";
 import PatientInfo from "./components/PatientInfo";
 import PantryDetails from "./components/PantryDetails";
 import TrackTasks from "./components/TrackTasks";
+import PantryLayout from "./layouts/PantryLayout";
+import DeliverStaffDetails from "./components/DeliverStaffDetails";
+import TAsksAssigned from "./components/TAsksAssigned";
+import AssigneDelivery from "./components/AssigneDelivery";
+import AllDeliverStatus from './components/AllDeliverStatus';
+import DeliveryDetals from './components/DeliveryDetals'
+
 
 function App() {
   const router = createBrowserRouter(
@@ -32,7 +39,15 @@ function App() {
           <Route path="track-tasks" element={<TrackTasks />} />
         </Route>
 
-        <Route path="pantry" element={<Pantry />} />
+        <Route path="pantry" element={<PantryLayout />}>
+          <Route index element={< TAsksAssigned/>} />
+          <Route path="tasks-assigned" element={< TAsksAssigned/>} />
+          <Route path="delivery-staff-details" element={< DeliverStaffDetails/>} />
+          <Route path="assigne-delivery" element={< AssigneDelivery/>} />
+          <Route path="delivery-status" element={< AllDeliverStatus/>} />
+          <Route path="delivery-details" element={< DeliveryDetals/>} />
+
+        </Route>
         <Route path="delivery" element={<Delivery />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

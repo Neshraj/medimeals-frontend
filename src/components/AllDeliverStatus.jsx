@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/TrackTasks.css";
 
 const TrackTasks = () => {
   const baseURL = "http://localhost:5000";
+  const location = useLocation();
+  const { email } = location.state || {}
   const [allTasks, setAllTasks] = useState([]);
+
+  console.log('ethth g gtdh',email);
+  
   const socket = io(baseURL);
 
   useEffect(() => {
@@ -24,11 +30,12 @@ const TrackTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`${baseURL}/getAllTasks`, {
-        method: "GET",
+      const response = await fetch(`${baseURL}/getDeliveryStaffAllTasks`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ email }), // Pass email to the backend
       });
 
       if (response.ok) {
@@ -76,7 +83,7 @@ const TrackTasks = () => {
                     <span className="status-label">Status</span> :{" "}
                     <span style={{ color: statusColor,}}>{task.status}</span>
                   </p>
-                  <p>Pantry : {task.pantryId}</p>
+                  <p>Deliver To : {task.deliverTo}</p>
                 </li>
               );
             })}

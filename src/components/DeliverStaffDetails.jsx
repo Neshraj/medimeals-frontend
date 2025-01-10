@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/InnerPantry.css";
 
-function AllDeliverStatus() {
+function DeliverStaffDetails() {
   const baseURL = "http://localhost:5000";
   const [staffList, setStaffList] = useState([]);
   const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
@@ -68,7 +67,7 @@ function AllDeliverStatus() {
   };
 
   const handleStaffClick = (staff) => {
-    navigate("/pantry/delivery-status", { state: { staff } });
+    navigate("/pantry/assigne-delivery", { state: { staff } });
   };
 
   return (
@@ -141,4 +140,4 @@ function AllDeliverStatus() {
   );
 }
 
-export default AllDeliverStatus;
+export default DeliverStaffDetails;
