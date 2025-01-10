@@ -6,25 +6,23 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/TrackTasks.css";
 
 const TrackTasks = () => {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const location = useLocation();
-  const { email } = location.state || {}
+  const { email } = location.state || {};
   const [allTasks, setAllTasks] = useState([]);
 
-  console.log('ethth g gtdh',email);
-  
+  console.log("ethth g gtdh", email);
+
   const socket = io(baseURL);
 
   useEffect(() => {
     fetchTasks();
 
-    // Listen for task updates via socket
     socket.on("taskUpdated", fetchTasks);
 
-    // Cleanup socket listener on component unmount
     return () => {
-      socket.off("taskUpdated", fetchTasks); // Proper cleanup of event listener
-      socket.disconnect(); // Disconnect socket when component unmounts
+      socket.off("taskUpdated", fetchTasks);
+      socket.disconnect();
     };
   }, []);
 
@@ -35,7 +33,7 @@ const TrackTasks = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }), // Pass email to the backend
+        body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
@@ -46,7 +44,7 @@ const TrackTasks = () => {
       }
     } catch (error) {
       toast.error("Error fetching tasks.");
-      console.error("Error fetching tasks:", error); // Log the error for debugging
+      console.error("Error fetching tasks:", error);
     }
   };
 
@@ -81,7 +79,7 @@ const TrackTasks = () => {
                   <div className="task-title">{task.title}</div>
                   <p>
                     <span className="status-label">Status</span> :{" "}
-                    <span style={{ color: statusColor,}}>{task.status}</span>
+                    <span style={{ color: statusColor }}>{task.status}</span>
                   </p>
                   <p>Deliver To : {task.deliverTo}</p>
                 </li>

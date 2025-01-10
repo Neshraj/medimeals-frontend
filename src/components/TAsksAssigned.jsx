@@ -6,17 +6,15 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/TrackTasks.css";
 
 const TAsksAssigned = () => {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [allTasks, setAllTasks] = useState([]);
-  const email = localStorage.getItem('email');
-  console.log('email', email);
+  const email = localStorage.getItem("email");
+  console.log("email", email);
 
   const socket = io(baseURL);
 
   useEffect(() => {
     fetchTasks();
-
-    // Listen for real-time updates
     socket.on("taskUpdated", (updatedTask) => {
       setAllTasks((prevTasks) =>
         prevTasks.map((task) =>
@@ -26,7 +24,7 @@ const TAsksAssigned = () => {
     });
 
     return () => {
-      socket.disconnect(); // Cleanup on component unmount
+      socket.disconnect();
     };
   }, []);
 
@@ -37,13 +35,13 @@ const TAsksAssigned = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }), // Pass email to the backend
+        body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
         const tasks = await response.json();
         setAllTasks(tasks);
-        socket.emit("updateTask", fetchTasks); // Emit the update event
+        socket.emit("updateTask", fetchTasks);
       } else {
         toast.error("Failed to fetch tasks.");
       }
@@ -102,8 +100,8 @@ const TAsksAssigned = () => {
                     style={{
                       border: "0px",
                       padding: "5px",
-                      borderRadius:'10px',
-                      boxShadow:'1px 2px 1px rgb(131, 131, 131)',
+                      borderRadius: "10px",
+                      boxShadow: "1px 2px 1px rgb(131, 131, 131)",
                       color:
                         task.status === "Pending"
                           ? "rgb(255, 74, 74)"

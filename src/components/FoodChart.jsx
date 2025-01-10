@@ -14,8 +14,6 @@ function FoodChart() {
       try {
         const response = await fetch(`${baseURL}/mealdata`);
         const data = await response.json();
-
-        // Transform data into the desired format (if necessary)
         const formattedData = data.reduce((acc, item) => {
           acc[item.day] = item.meals;
           return acc;
@@ -50,9 +48,9 @@ function FoodChart() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const updatedMealPlan = mealPlans[selectedDay];
-  
+
     try {
       const response = await fetch(`${baseURL}/updatemealplane`, {
         method: "PUT",
@@ -65,12 +63,11 @@ function FoodChart() {
         }),
       });
       const data = await response.json();
-  
+
       if (response.ok) {
-        if(data.message === "Meal plan updated successfully"){
+        if (data.message === "Meal plan updated successfully") {
           toast.success(data.message);
-        }
-        else{
+        } else {
           toast.error(data.message);
         }
       } else {
@@ -80,7 +77,6 @@ function FoodChart() {
       console.error("Error updating meal plan:", error);
     }
   };
-  
 
   if (loading) {
     return <div>Loading meal plans...</div>;
@@ -88,15 +84,19 @@ function FoodChart() {
 
   return (
     <div className="food-chart-container">
-      <ToastContainer 
-              position="top-center" 
-              autoClose={2000} 
-              draggable
-      />
+      <ToastContainer position="top-center" autoClose={2000} draggable />
       <h1>Food Chart</h1>
 
       <div className="days-container">
-        {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+        {[
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ].map((day) => (
           <button
             key={day}
             className={`day-btn ${selectedDay === day ? "selected" : ""}`}
@@ -140,7 +140,9 @@ function FoodChart() {
               <input
                 type="text"
                 name="instructions"
-                value={mealPlans[selectedDay][mealType][mealTime]?.instructions || ""}
+                value={
+                  mealPlans[selectedDay][mealType][mealTime]?.instructions || ""
+                }
                 onChange={(e) => handleInputChange(e, mealTime)}
               />
             </label>

@@ -22,37 +22,32 @@ function PatientInfo() {
   const handleSave = async () => {
     try {
       const response = await fetch(`${baseURL}/updatepatientdetail`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedPatient),
       });
-  
+
       if (response.ok) {
         const result = await response.json();
-        if(result.message==='Patient details updated successfully'){
-          toast.success('Patient details updated successfully');
-        }
-        else if(result.message==='No changes made'){
-          toast.info('No changes made');
-        }
-        else if(result.message==='Error updating patient details'){
-          toast.error('Error updating patient details');
-        }
-
-        else{
-          toast.error('Failed to update patient details');
+        if (result.message === "Patient details updated successfully") {
+          toast.success("Patient details updated successfully");
+        } else if (result.message === "No changes made") {
+          toast.info("No changes made");
+        } else if (result.message === "Error updating patient details") {
+          toast.error("Error updating patient details");
+        } else {
+          toast.error("Failed to update patient details");
         }
         setIsEditing(false);
       } else {
-        toast.error('Failed to update patient details');
+        toast.error("Failed to update patient details");
       }
     } catch (error) {
-      toast.error('Error updating patient details:');
+      toast.error("Error updating patient details:");
     }
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,18 +59,22 @@ function PatientInfo() {
 
   return (
     <div className="patient-info-container">
-      <ToastContainer 
-              position="top-center" 
-              autoClose={2000} 
-              draggable
-      />
+      <ToastContainer position="top-center" autoClose={2000} draggable />
       <h2 className="patient-info-title">Patient Information</h2>
 
       <div className="patient-info-buttons">
-        <button className="edit-button" onClick={handleEdit} disabled={isEditing}>
+        <button
+          className="edit-button"
+          onClick={handleEdit}
+          disabled={isEditing}
+        >
           Edit
         </button>
-        <button className="save-button" onClick={handleSave} disabled={!isEditing}>
+        <button
+          className="save-button"
+          onClick={handleSave}
+          disabled={!isEditing}
+        >
           Save
         </button>
       </div>

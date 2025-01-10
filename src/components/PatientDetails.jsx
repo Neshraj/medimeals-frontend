@@ -37,16 +37,24 @@ function PatientDetails() {
         updatedData = [...filteredData].sort((a, b) => b.age - a.age);
         break;
       case "male":
-        updatedData = allPatientDetails.filter((patient) => patient.gender === "male");
+        updatedData = allPatientDetails.filter(
+          (patient) => patient.gender === "male"
+        );
         break;
       case "female":
-        updatedData = allPatientDetails.filter((patient) => patient.gender === "female");
+        updatedData = allPatientDetails.filter(
+          (patient) => patient.gender === "female"
+        );
         break;
       case "veg":
-        updatedData = allPatientDetails.filter((patient) => patient.mealtype === "veg");
+        updatedData = allPatientDetails.filter(
+          (patient) => patient.mealtype === "veg"
+        );
         break;
       case "non-veg":
-        updatedData = allPatientDetails.filter((patient) => patient.mealtype === "non-veg");
+        updatedData = allPatientDetails.filter(
+          (patient) => patient.mealtype === "non-veg"
+        );
         break;
       default:
         updatedData = allPatientDetails; // Reset to all data
@@ -75,7 +83,11 @@ function PatientDetails() {
     <div className="patient-details-container">
       <div className="filter-search-container">
         <div className="filter-container">
-          <select id="filter" onChange={handleFilterChange} className="filter-select">
+          <select
+            id="filter"
+            onChange={handleFilterChange}
+            className="filter-select"
+          >
             <option value="all">Reset Filters</option>
             <option value="age-asc">Sort by Age (Ascending)</option>
             <option value="age-desc">Sort by Age (Descending)</option>
@@ -102,7 +114,9 @@ function PatientDetails() {
           <div
             key={index}
             className="patient-card"
-            onClick={() => navigate("/manager/patient-info", { state: { patient } })}
+            onClick={() =>
+              navigate("/manager/patient-info", { state: { patient } })
+            }
           >
             <p className="patient-info">
               <strong>Name:</strong> {patient.name} <br />

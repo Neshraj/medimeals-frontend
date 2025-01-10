@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/PantryDetails.css";
-import preData from "../data/mealdata";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 const AssigneDelivery = () => {
-  const baseURL = "http://localhost:5000";
-  const navigate = useNavigate();
+  const baseURL = "https://medimealsbackend.onrender.com";
   const { state } = useLocation();
   const { staff } = state || {};
-  const [selectedDay, setSelectedDay] = useState("");
-  const [selectedMealType, setSelectedMealType] = useState("");
-  const [selectedMealTime, setSelectedMealTime] = useState("");
-  const [selectedMeal, setSelectedMeal] = useState("");
-  const [mealInstruction, setMealInstruction] = useState("");
   const [allTasks, setAllTasks] = useState([]);
   const [allPatientDetails, setAllPatientDetails] = useState([]);
-  const [selectedPatients, setSelectedPatients] = useState({}); // Store selected patients per task
+  const [selectedPatients, setSelectedPatients] = useState({});
   const email = localStorage.getItem("email");
   const socket = io(baseURL);
 
@@ -58,11 +50,7 @@ const AssigneDelivery = () => {
     }
   };
 
-  const generateUniqueId = () => {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  };
-
-  const handleAssignTask = async (taskId,index) => {    
+  const handleAssignTask = async (taskId, index) => {
     const selectedPatient = selectedPatients[index];
     if (!selectedPatient) {
       toast.info("Please select a patient for this task.");
@@ -73,7 +61,7 @@ const AssigneDelivery = () => {
       pantryId: email,
       deliveryId: staff.email,
       deliverTo: selectedPatient,
-      taskId :taskId,
+      taskId: taskId,
     };
 
     try {
@@ -163,9 +151,12 @@ const AssigneDelivery = () => {
                 <li key={index} className="assignedtaskscard">
                   {task.title}
                   <p>
-                    <span style={{ textDecoration: "underline" }}>Status</span> : <span style={{ color: statusColor }}>{task.status}</span>
+                    <span style={{ textDecoration: "underline" }}>Status</span>{" "}
+                    : <span style={{ color: statusColor }}>{task.status}</span>
                   </p>
-                  <label htmlFor={`patient-select-${index}`}>Select Patient</label>
+                  <label htmlFor={`patient-select-${index}`}>
+                    Select Patient
+                  </label>
                   <select
                     id={`patient-select-${index}`}
                     onChange={(e) => handlePatientChange(index, e.target.value)}
@@ -188,7 +179,7 @@ const AssigneDelivery = () => {
                   </select>
                   <br />
                   <button
-                    onClick={() => handleAssignTask(task.taskId,index)}
+                    onClick={() => handleAssignTask(task.taskId, index)}
                     className="assign-btn"
                   >
                     Assign Delivery

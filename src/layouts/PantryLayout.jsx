@@ -11,14 +11,12 @@ const PantryLayout = () => {
 
   useEffect(() => {
     if (!email || !password) {
-      // Optionally navigate to login if email or password is not available
       // navigate("/login");
     }
   }, [email, password, navigate]);
 
   return (
     <div className="manager-layout-container">
-      {/* Pass email and password as props to PantrySidebar */}
       <PantrySidebar email={email} password={password} />
       <div className="manager-layout-content">
         <Outlet context={{ email, password }} />

@@ -30,7 +30,7 @@ function App() {
         <Route path="home" element={<Home />} />
 
         <Route path="manager" element={<ManagerLayout />}>
-          <Route index element={<PatientDetails />} />
+          <Route index element={<TrackTasks />} />
           <Route path="patient-details" element={<PatientDetails />} />
           <Route path="patient-info" element={<PatientInfo />} />
           <Route path="food-chart" element={<FoodChart />} />

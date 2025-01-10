@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import useDocumentTitle from "../useDocumentTitle";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import '../styles/Login.css';
+import "../styles/Login.css";
 
 function Login() {
   const baseURL = "https://medimealsbackend.onrender.com";
-  useDocumentTitle('Login');
+  useDocumentTitle("Login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ function Login() {
       return;
     }
 
-    // Send the email and password to the server
     try {
       console.log(email);
       console.log(password);
@@ -42,21 +41,23 @@ function Login() {
 
       const data = await response.json();
       if (response) {
-        if(data.message === 'Login success for manager') {
+        if (data.message === "Login success for manager") {
           toast.success(data.message);
-          //localStorage.setItem('email', email); // Store email in local storage
-          navigate('/manager', { state: { email, password } });
-        } else if(data.message === 'Login success for pantry') {
+
+          navigate("/manager", { state: { email, password } });
+        } else if (data.message === "Login success for pantry") {
           toast.success(data.message);
-          localStorage.setItem('email', email); // Store email in local storage
-          navigate('/pantry', { state: { email, password } });
-        } else if(data.message === 'Login success for delivery') {
+          localStorage.setItem("email", email);
+          navigate("/pantry", { state: { email, password } });
+        } else if (data.message === "Login success for delivery") {
           toast.success(data.message);
-          localStorage.setItem('email', email); // Store email in local storage
-          navigate('/delivery', { state: { email, password } });
-        } else if(data.message === 'User not found') {
+
+          navigate("/delivery", { state: { email, password } });
+        } else if (data.message === "User not found") {
           toast.info(data.message || "Login failed");
-        } else if(data.message === 'There is a problem in logging in. Try again later') {
+        } else if (
+          data.message === "There is a problem in logging in. Try again later"
+        ) {
           toast.error(data.message || "Login failed");
         } else {
           toast.error(data.message || "Login failed");
@@ -71,13 +72,13 @@ function Login() {
 
   return (
     <div className="login">
-      <ToastContainer 
-        position="top-center" 
-        autoClose={2000} 
-        draggable
-      />
+      <ToastContainer position="top-center" autoClose={2000} draggable />
       <div className="login-form">
-        <h1><span id="t1">Medi</span><span id="t2">Meals</span><img src="/assets/images/logo.png" alt="logo" id="formlogo" /></h1>
+        <h1>
+          <span id="t1">Medi</span>
+          <span id="t2">Meals</span>
+          <img src="/assets/images/logo.png" alt="logo" id="formlogo" />
+        </h1>
         <form onSubmit={validateForm}>
           <input
             type="text"
@@ -93,7 +94,9 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="formitems">Login</button>
+          <button type="submit" className="formitems">
+            Login
+          </button>
         </form>
       </div>
     </div>

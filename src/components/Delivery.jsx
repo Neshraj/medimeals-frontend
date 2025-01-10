@@ -1,144 +1,134 @@
-
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "../styles/InnerPantry.css";
+import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { io } from "socket.io-client";
 
-function AllDeliverStatus() {
-  const baseURL = "http://localhost:5000";
-  const [staffList, setStaffList] = useState([]);
-  const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
-  const [showForm, setShowForm] = useState(false);
-  const navigate = useNavigate();
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/TrackTasks.css";
+
+const Delivery = () => {
+  const baseURL = "https://medimealsbackend.onrender.com";
+  const [allTasks, setAllTasks] = useState([]);
+  const { state } = useLocation();
+  const { email } = state || {};
+  console.log("email", email);
+  const socket = io(baseURL);
 
   useEffect(() => {
-    const fetchPantryStaff = async () => {
-      try {
-        const response = await fetch(`${baseURL}/getdeliverystaffdata`);
-        const data = await response.json();
-        setStaffList(data); // Set pantry staff data to state
-      } catch (error) {
-        console.error("Error fetching pantry staff:", error);
-      }
-    };
+    fetchTasks();
+    socket.on("taskUpdated", (updatedTask) => {
+      setAllTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === updatedTask._id ? updatedTask : task
+        )
+      );
+    });
 
-    fetchPantryStaff();
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewStaff((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleAddStaff = async () => {
-    const { name, contact, location, email, password } = newStaff;
-    if (!name || !contact || !location || !email || !password) {
-      toast.info("Fill all fields!");
-      return;
-    }
-
+  const fetchTasks = async () => {
     try {
-      // Send the new staff data to the backend
-      const response = await fetch(`${baseURL}/add-deliver-staff`, {
+      const response = await fetch(`${baseURL}/getDeliveryTasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newStaff),
+        body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
-        const res = await response.json();
-        if(res.message === "Staff added successfully") {
-        setStaffList((prev) => [...prev, newStaff]);
-        setNewStaff({ name: "", contact: "", location: "", email: "", password: "" });
-        setShowForm(false);
-        toast.success(res.message);
-        } else {
-          toast.error("Failed to add staff");
-        }
+        const tasks = await response.json();
+        setAllTasks(tasks);
+        socket.emit("updateTask", fetchTasks);
       } else {
-        toast.error("Failed to add staff");
+        toast.error("Failed to fetch tasks.");
       }
     } catch (error) {
-      console.error("Error adding staff:", error);
-      toast.error("Error adding staff.");
+      toast.error("Error fetching tasks.");
     }
   };
 
-  const handleStaffClick = (staff) => {
-    navigate("/pantry/delivery-status", { state: { staff } });
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      const response = await fetch(`${baseURL}/updateTaskStatus`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ taskId, newStatus }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.message === "Task status updated successfully") {
+          toast.success("Task status updated successfully");
+          setAllTasks((prevTasks) =>
+            prevTasks.map((task) =>
+              task.taskId === taskId ? { ...task, status: newStatus } : task
+            )
+          );
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        toast.error("Failed to update task status.");
+      }
+    } catch (error) {
+      toast.error("Error updating task status.");
+    }
   };
 
   return (
-    <div className="inner-pantry-container">
+    <div className="track-tasks-container">
       <ToastContainer position="top-center" autoClose={2000} draggable />
-      <button className="add-staff-btn" onClick={() => setShowForm(!showForm)}>
-        {showForm ? "Cancel" : "Add Staff"}
-      </button>
-
-      {showForm && (
-        <div className="add-staff-form">
-          <h3>Add New Staff</h3>
-          <input
-            type="text"
-            name="name"
-            placeholder="Staff Name"
-            value={newStaff.name}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="contact"
-            placeholder="Contact Info"
-            value={newStaff.contact}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="location"
-            placeholder="Location"
-            value={newStaff.location}
-            onChange={handleInputChange}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={newStaff.email}
-            onChange={handleInputChange}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={newStaff.password}
-            onChange={handleInputChange}
-          />
-          <button className="submit-btn" onClick={handleAddStaff}>
-            Add Staff
-          </button>
-        </div>
-      )}
-
-      <div className="staff-list">
-        <h2>Pantry Staff Details</h2>
-        {staffList.map((staff, index) => (
-          <div
-            key={index}
-            className="staff-card"
-            onClick={() => handleStaffClick(staff)}
-          >
-            <p><strong>Name:</strong> {staff.name}</p>
-            <p><strong>Contact:</strong> {staff.contact}</p>
-            <p><strong>Location:</strong> {staff.location}</p>
-            <p><strong>Email:</strong> {staff.email}</p>
-          </div>
-        ))}
+      <h2>All Tasks</h2>
+      <div className="assigned-tasks">
+        {allTasks.length > 0 ? (
+          <ul>
+            {allTasks.map((task) => (
+              <li key={task._id} className="task-card">
+                <div className="task-title">{task.title}</div>
+                <p>
+                  <span className="status-label">Status</span> :{" "}
+                  <select
+                    value={task.status}
+                    onChange={(e) =>
+                      handleStatusChange(task.taskId, e.target.value)
+                    }
+                    style={{
+                      border: "0px",
+                      padding: "5px",
+                      borderRadius: "10px",
+                      boxShadow: "1px 2px 1px rgb(131, 131, 131)",
+                      color:
+                        task.status === "Pending"
+                          ? "rgb(255, 74, 74)"
+                          : task.status === "Preparing"
+                          ? "rgb(192, 67, 255)"
+                          : task.status === "Out For Delivery"
+                          ? "rgb(79, 79, 255)"
+                          : "rgb(35, 214, 35)",
+                    }}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Preparing">Preparing</option>
+                    <option value="Out For Delivery">Out For Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+                </p>
+                <p>Deliver To : {task.deliverTo}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No tasks available.</p>
+        )}
       </div>
     </div>
   );
-}
+};
 
-export default AllDeliverStatus;
+export default Delivery;

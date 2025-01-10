@@ -5,9 +5,15 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/InnerPantry.css";
 
 function DeliverStaffDetails() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [staffList, setStaffList] = useState([]);
-  const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
+  const [newStaff, setNewStaff] = useState({
+    name: "",
+    contact: "",
+    location: "",
+    email: "",
+    password: "",
+  });
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
@@ -16,7 +22,7 @@ function DeliverStaffDetails() {
       try {
         const response = await fetch(`${baseURL}/getdeliverystaffdata`);
         const data = await response.json();
-        setStaffList(data); // Set pantry staff data to state
+        setStaffList(data);
       } catch (error) {
         console.error("Error fetching pantry staff:", error);
       }
@@ -38,7 +44,6 @@ function DeliverStaffDetails() {
     }
 
     try {
-      // Send the new staff data to the backend
       const response = await fetch(`${baseURL}/add-deliver-staff`, {
         method: "POST",
         headers: {
@@ -49,11 +54,17 @@ function DeliverStaffDetails() {
 
       if (response.ok) {
         const res = await response.json();
-        if(res.message === "Staff added successfully") {
-        setStaffList((prev) => [...prev, newStaff]);
-        setNewStaff({ name: "", contact: "", location: "", email: "", password: "" });
-        setShowForm(false);
-        toast.success(res.message);
+        if (res.message === "Staff added successfully") {
+          setStaffList((prev) => [...prev, newStaff]);
+          setNewStaff({
+            name: "",
+            contact: "",
+            location: "",
+            email: "",
+            password: "",
+          });
+          setShowForm(false);
+          toast.success(res.message);
         } else {
           toast.error("Failed to add staff");
         }
@@ -129,15 +140,22 @@ function DeliverStaffDetails() {
             className="staff-card"
             onClick={() => handleStaffClick(staff)}
           >
-            <p><strong>Name:</strong> {staff.name}</p>
-            <p><strong>Contact:</strong> {staff.contact}</p>
-            <p><strong>Location:</strong> {staff.location}</p>
-            <p><strong>Email:</strong> {staff.email}</p>
+            <p>
+              <strong>Name:</strong> {staff.name}
+            </p>
+            <p>
+              <strong>Contact:</strong> {staff.contact}
+            </p>
+            <p>
+              <strong>Location:</strong> {staff.location}
+            </p>
+            <p>
+              <strong>Email:</strong> {staff.email}
+            </p>
           </div>
         ))}
       </div>
     </div>
   );
 }
-
 export default DeliverStaffDetails;

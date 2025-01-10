@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -6,10 +5,15 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/InnerPantry.css";
 
 function DeliveryDetals() {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://medimealsbackend.onrender.com";
   const [staffList, setStaffList] = useState([]);
-  const [newStaff, setNewStaff] = useState({ name: "", contact: "", location: "", email: "", password: "" });
-  const [showForm, setShowForm] = useState(false);
+  const [newStaff, setNewStaff] = useState({
+    name: "",
+    contact: "",
+    location: "",
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,9 +36,9 @@ function DeliveryDetals() {
   };
 
   const handleStaffClick = (staff) => {
-    console.log('tosend ',staff);
-    
-    navigate("/pantry/delivery-status", {state: { email: staff } });
+    console.log("tosend ", staff);
+
+    navigate("/pantry/delivery-status", { state: { email: staff } });
   };
 
   return (
@@ -48,10 +52,18 @@ function DeliveryDetals() {
             className="staff-card"
             onClick={() => handleStaffClick(staff.email)}
           >
-            <p><strong>Name:</strong> {staff.name}</p>
-            <p><strong>Contact:</strong> {staff.contact}</p>
-            <p><strong>Location:</strong> {staff.location}</p>
-            <p><strong>Email:</strong> {staff.email}</p>
+            <p>
+              <strong>Name:</strong> {staff.name}
+            </p>
+            <p>
+              <strong>Contact:</strong> {staff.contact}
+            </p>
+            <p>
+              <strong>Location:</strong> {staff.location}
+            </p>
+            <p>
+              <strong>Email:</strong> {staff.email}
+            </p>
           </div>
         ))}
       </div>
