@@ -7,7 +7,6 @@ import "../styles/TrackTasks.css";
 const TrackTasks = () => {
   const baseURL = "https://medimealsbackend.onrender.com";
   const [allTasks, setAllTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const socket = io(baseURL);
 
   useEffect(() => {
@@ -22,7 +21,6 @@ const TrackTasks = () => {
   }, []);
 
   const fetchTasks = async () => {
-    setLoading(true);
     try {
       const response = await fetch(`${baseURL}/getAllTasks`, {
         method: "GET",
@@ -40,8 +38,6 @@ const TrackTasks = () => {
     } catch (error) {
       toast.error("Error fetching tasks.");
       console.error("Error fetching tasks:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -50,9 +46,7 @@ const TrackTasks = () => {
       <ToastContainer position="top-center" autoClose={2000} draggable />
       <h2>All Tasks</h2>
       <div className="assigned-tasks">
-        {loading ? (
-          <p>Loading tasks...</p>
-        ) : allTasks.length > 0 ? (
+        {allTasks.length > 0 ? (
           <ul>
             {allTasks.map((task, index) => {
               let statusColor = "";
@@ -86,7 +80,7 @@ const TrackTasks = () => {
             })}
           </ul>
         ) : (
-          <p>No tasks available.</p>
+          <p>No tasks available</p>
         )}
       </div>
     </div>
