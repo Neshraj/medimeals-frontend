@@ -8,14 +8,13 @@ import "../styles/TrackTasks.css";
 const TAsksAssigned = () => {
   const baseURL = "https://medimealsbackend.onrender.com";
   const [allTasks, setAllTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const email = localStorage.getItem("email");
+  console.log("email", email);
 
   const socket = io(baseURL);
 
   useEffect(() => {
     fetchTasks();
-
     socket.on("taskUpdated", (updatedTask) => {
       setAllTasks((prevTasks) =>
         prevTasks.map((task) =>
@@ -30,7 +29,6 @@ const TAsksAssigned = () => {
   }, []);
 
   const fetchTasks = async () => {
-    setLoading(true);
     try {
       const response = await fetch(`${baseURL}/getTasks`, {
         method: "POST",
@@ -49,8 +47,6 @@ const TAsksAssigned = () => {
       }
     } catch (error) {
       toast.error("Error fetching tasks.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -70,7 +66,7 @@ const TAsksAssigned = () => {
           toast.success("Task status updated successfully");
           setAllTasks((prevTasks) =>
             prevTasks.map((task) =>
-              task._id === taskId ? { ...task, status: newStatus } : task
+              task.taskId === taskId ? { ...task, status: newStatus } : task
             )
           );
         } else {
@@ -89,9 +85,7 @@ const TAsksAssigned = () => {
       <ToastContainer position="top-center" autoClose={2000} draggable />
       <h2>All Tasks</h2>
       <div className="assigned-tasks">
-        {loading ? (
-          <p>Loading tasks...</p>
-        ) : allTasks.length > 0 ? (
+        {allTasks.length > 0 ? (
           <ul>
             {allTasks.map((task) => (
               <li key={task._id} className="task-card">
@@ -101,7 +95,7 @@ const TAsksAssigned = () => {
                   <select
                     value={task.status}
                     onChange={(e) =>
-                      handleStatusChange(task._id, e.target.value)
+                      handleStatusChange(task.taskId, e.target.value)
                     }
                     style={{
                       border: "0px",
