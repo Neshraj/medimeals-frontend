@@ -14,17 +14,22 @@ function InnerPantry() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPantryStaff = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`${baseURL}/getpantrystaffdata`);
         const data = await response.json();
         setStaffList(data);
       } catch (error) {
         console.error("Error fetching pantry staff:", error);
+        toast.error("Error fetching pantry staff.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -134,26 +139,32 @@ function InnerPantry() {
 
       <div className="staff-list">
         <h2>Pantry Staff Details</h2>
-        {staffList.map((staff, index) => (
-          <div
-            key={index}
-            className="staff-card"
-            onClick={() => handleStaffClick(staff)}
-          >
-            <p>
-              <strong>Name:</strong> {staff.name}
-            </p>
-            <p>
-              <strong>Contact:</strong> {staff.contact}
-            </p>
-            <p>
-              <strong>Location:</strong> {staff.location}
-            </p>
-            <p>
-              <strong>Email:</strong> {staff.email}
-            </p>
-          </div>
-        ))}
+        {loading ? (
+          <p>Loading pantry staff details...</p>
+        ) : staffList.length > 0 ? (
+          staffList.map((staff, index) => (
+            <div
+              key={index}
+              className="staff-card"
+              onClick={() => handleStaffClick(staff)}
+            >
+              <p>
+                <strong>Name:</strong> {staff.name}
+              </p>
+              <p>
+                <strong>Contact:</strong> {staff.contact}
+              </p>
+              <p>
+                <strong>Location:</strong> {staff.location}
+              </p>
+              <p>
+                <strong>Email:</strong> {staff.email}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No staff details found.</p>
+        )}
       </div>
     </div>
   );

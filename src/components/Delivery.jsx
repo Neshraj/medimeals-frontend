@@ -9,9 +9,9 @@ import "../styles/TrackTasks.css";
 const Delivery = () => {
   const baseURL = "https://medimealsbackend.onrender.com";
   const [allTasks, setAllTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { state } = useLocation();
   const { email } = state || {};
-  console.log("email", email);
   const socket = io(baseURL);
 
   useEffect(() => {
@@ -48,6 +48,8 @@ const Delivery = () => {
       }
     } catch (error) {
       toast.error("Error fetching tasks.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -86,7 +88,9 @@ const Delivery = () => {
       <ToastContainer position="top-center" autoClose={2000} draggable />
       <h2>All Tasks</h2>
       <div className="assigned-tasks">
-        {allTasks.length > 0 ? (
+        {isLoading ? (
+          <p className="taststatus">Loading tasks...</p>
+        ) : allTasks.length > 0 ? (
           <ul>
             {allTasks.map((task) => (
               <li key={task._id} className="task-card">

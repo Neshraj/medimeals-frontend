@@ -15,6 +15,7 @@ function DeliverStaffDetails() {
     password: "",
   });
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +25,9 @@ function DeliverStaffDetails() {
         const data = await response.json();
         setStaffList(data);
       } catch (error) {
-        console.error("Error fetching pantry staff:", error);
+        toast.error("Error fetching delivery staff.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -72,7 +75,6 @@ function DeliverStaffDetails() {
         toast.error("Failed to add staff");
       }
     } catch (error) {
-      console.error("Error adding staff:", error);
       toast.error("Error adding staff.");
     }
   };
@@ -133,29 +135,36 @@ function DeliverStaffDetails() {
       )}
 
       <div className="staff-list">
-        <h2>Pantry Staff Details</h2>
-        {staffList.map((staff, index) => (
-          <div
-            key={index}
-            className="staff-card"
-            onClick={() => handleStaffClick(staff)}
-          >
-            <p>
-              <strong>Name:</strong> {staff.name}
-            </p>
-            <p>
-              <strong>Contact:</strong> {staff.contact}
-            </p>
-            <p>
-              <strong>Location:</strong> {staff.location}
-            </p>
-            <p>
-              <strong>Email:</strong> {staff.email}
-            </p>
-          </div>
-        ))}
+        <h2>Delivery Staff Details</h2>
+        {isLoading ? (
+          <p>Loading delivery staff details...</p>
+        ) : staffList.length === 0 ? (
+          <p>No delivery staffs available.</p>
+        ) : (
+          staffList.map((staff, index) => (
+            <div
+              key={index}
+              className="staff-card"
+              onClick={() => handleStaffClick(staff)}
+            >
+              <p>
+                <strong>Name:</strong> {staff.name}
+              </p>
+              <p>
+                <strong>Contact:</strong> {staff.contact}
+              </p>
+              <p>
+                <strong>Location:</strong> {staff.location}
+              </p>
+              <p>
+                <strong>Email:</strong> {staff.email}
+              </p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 }
+
 export default DeliverStaffDetails;
