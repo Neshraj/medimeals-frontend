@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/PantryDetails.css";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 const AssigneDelivery = () => {
   const baseURL = "https://medimealsbackend.onrender.com";
+  const navigate = useNavigate();
   const { state } = useLocation();
   const { staff } = state || {};
   const [allTasks, setAllTasks] = useState([]);
@@ -106,6 +108,34 @@ const AssigneDelivery = () => {
     }
   };
 
+  const removeStaff = async () => {
+      try {
+        const response = await fetch(`${baseURL}/removedeliverystaff`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(staff),
+        });
+  
+        if (response.ok) {
+          const result = await response.json();
+          if (result.message === "Staff removed successfully") {
+            toast.success(result.message);
+            navigate("/pantry/delivery-staff-details");
+          } else if (result.message === "Staff not found") {
+            toast.info(result.message);
+            navigate("/pantry/delivery-staff-details");
+          } else {
+            toast.error(result.message);
+          }
+        }
+      } catch (error) {
+        toast.error("Error updating patient details:");
+      }
+    };
+
+
   return (
     <div className="pantry-details-container">
       <ToastContainer position="top-center" autoClose={2000} draggable />
@@ -123,6 +153,9 @@ const AssigneDelivery = () => {
         <p>
           <strong>Location:</strong> {staff.location}
         </p>
+        <button className="remove-btn" onClick={removeStaff}>
+          Remove staff
+        </button>
       </div>
       <div className="assigned-tasks">
         <h3>Task To Assign</h3>
